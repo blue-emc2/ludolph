@@ -1,4 +1,4 @@
-defmodule LudolphTest do
+defmodule CliTest do
   use ExUnit.Case
   doctest Ludolph
 
