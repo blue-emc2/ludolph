@@ -10,11 +10,13 @@ defmodule CliTest do
   end
 
   test "シングルモードで起動する" do
-    assert parse_args(["-s", "/home/workspace/pi.txt", "-p", "1234"]) == {:single, "1234", "/home/workspace/pi.txt"}
+    assert parse_args(["-s", "/home/workspace/pi.txt", "-p", "1234"]) ==
+             {:single, "1234", "/home/workspace/pi.txt"}
   end
 
   test "マルチモードで起動する" do
-    assert parse_args(["-m", "/home/workspace/pi.txt", "-p", "1234"]) == {:multi, "1234", "/home/workspace/pi.txt"}
+    assert parse_args(["-m", "/home/workspace/pi.txt", "-p", "1234"]) ==
+             {:multi, "1234", "/home/workspace/pi.txt"}
   end
 
   test "シングルとマルチモードは共存できないのでヘルプが起動する" do

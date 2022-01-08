@@ -22,9 +22,9 @@ defmodule Ludolph.CLI do
   end
 
   def process(:help) do
-    IO.puts """
+    IO.puts("""
     usage: ludolph [-s | -m] path/to/pi.txt
-    """
+    """)
 
     System.halt(0)
   end
