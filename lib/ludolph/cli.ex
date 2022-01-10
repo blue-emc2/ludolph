@@ -29,13 +29,13 @@ defmodule Ludolph.CLI do
     System.halt(0)
   end
 
-  def process({:single, _path}) do
-    IO.puts("single")
+  def process({:single, pattern, path}) do
+    Ludolph.PISearcher.scan(pattern, path)
+
     System.halt(0)
   end
 
-  def process({:multi, _path}) do
-    IO.puts("multi")
+  def process({:multi, _pattern, _path}) do
     System.halt(0)
   end
 end
