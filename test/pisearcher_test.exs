@@ -10,6 +10,14 @@ defmodule PISearcherTest do
   end
 
   test "指定した数列が見つからない" do
-    assert scan("test/pi_5.txt", "999") == {:ok, 0}
+    assert scan("test/pi_5.txt", "999") == {:ng}
+  end
+
+  test "指定した数列が1つ見つかる" do
+    assert scan("test/pi_5.txt", "5") == {:ok, 1}
+  end
+
+  test "指定した数列が複数個見つかる" do
+    assert scan("test/pi_10000.txt", "888") == {:ok, 6}
   end
 end
