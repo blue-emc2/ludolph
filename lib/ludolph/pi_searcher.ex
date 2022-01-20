@@ -12,36 +12,46 @@ defmodule Ludolph.PISearcher do
     )
     # とりあえず10分割する
     |> Stream.chunk_every(10)
-    |> _scan(pattern)
+    |> get_numeric_list()
+    |> count_up(pattern)
   end
 
-  defp _scan(stream, pattern) do
-    [head | _tail] =
-      String.codepoints(pattern)
-      |> Enum.map(fn s -> String.to_integer(s) end)
-
-    # 3.14の点を抜いた
-    numeric_list =
-      Enum.to_list(stream)
+  # 3.14の点を抜いた数列
+  defp get_numeric_list(stream) do
+    Enum.to_list(stream)
       |> List.flatten()
-      |> Enum.join()
-      |> String.trim()
-      |> String.replace(".", "")
-      |> String.codepoints()
+      |> List.delete_at(1)
+  end
+
+  defp count_up(list, pattern) do
+    [head | tail] = String.codepoints(pattern)
 
     count =
-      for n <- numeric_list, reduce: 0 do
-        acc ->
-          if(String.to_integer(n) == head) do
-            acc + 1
-          else
-            acc
-          end
-      end
+      Enum.with_index(list)
+      |> Enum.reduce(0, fn {n, index}, acc ->
+        if(n == head) do
+          # 次の数と次のパターン文字を探す
+          c = _count_up(list, index, tail, 1, 1)
+          acc + c
+        else
+          acc
+        end
+      end)
 
     case count do
       0 -> {:ng}
       _ -> {:ok, count}
+    end
+  end
+
+  defp _count_up(list, index, pattern, pindex, acc) do
+    n = Enum.at(list, index)
+    p = Enum.at(pattern, pindex)
+
+    cond do
+      n == "\n" || is_nil(p) -> acc
+      n != p -> 0
+      n == p -> 1
     end
   end
 end
