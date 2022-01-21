@@ -18,6 +18,7 @@ defmodule PISearcherTest do
   end
 
   test "指定した数列が複数個見つかる" do
-    assert scan("test/pi_10000.txt", "888") == {:ok, 6}
+    # "8888"は2つとしてカウントする
+    assert scan("test/pi_10000.txt", "888") == {:ok, 7}
   end
 end
