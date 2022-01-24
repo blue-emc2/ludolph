@@ -30,7 +30,7 @@ defmodule Ludolph.CLI do
   end
 
   def process({:single, pattern, path}) do
-    ret = Ludolph.PISearcher.scan(path, pattern)
+    ret = Ludolph.Single.PISearcher.scan(path, pattern)
     case ret do
       {:ok, count} -> "#{pattern}は#{count}個見つかりました"
       {:ng} -> "見つかりませんでした"

@@ -1,7 +1,7 @@
 defmodule PISearcherTest do
   use ExUnit.Case
 
-  import Ludolph.PISearcher
+  import Ludolph.Single.PISearcher
 
   test "ファイルが見つからない時エラーを返す" do
     assert_raise File.Error, fn ->

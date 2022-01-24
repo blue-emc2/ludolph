@@ -1,4 +1,4 @@
-defmodule Ludolph.PISearcher do
+defmodule Ludolph.Single.PISearcher do
   def scan(path, pattern) do
     Stream.resource(
       fn -> File.open!(path) end,
