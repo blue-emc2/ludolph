@@ -2,7 +2,7 @@ defmodule CliTest do
   use ExUnit.Case
   doctest Ludolph
 
-  import Ludolph.CLI, only: [parse_args: 1]
+  import Ludolph.CLI, only: [parse_args: 1, process: 1]
 
   test "-hか--helpを指定したらヘルプが起動する" do
     assert parse_args(["-s", "-h"]) == :help
@@ -29,5 +29,9 @@ defmodule CliTest do
 
   test "ファイルパスが与えられなかったらヘルプが起動する" do
     assert parse_args(["-s", "1234"]) == :help
+  end
+
+  test "10000けたの円周率を888で検索すると7個見つかる" do
+    assert process({:single, "888", "test/pi_10000.txt"}) == "888は7個見つかりました"
   end
 end

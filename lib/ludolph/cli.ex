@@ -30,12 +30,13 @@ defmodule Ludolph.CLI do
   end
 
   def process({:single, pattern, path}) do
-    Ludolph.PISearcher.scan(pattern, path)
-
-    System.halt(0)
+    ret = Ludolph.PISearcher.scan(path, pattern)
+    case ret do
+      {:ok, count} -> "#{pattern}は#{count}個見つかりました"
+      {:ng} -> "見つかりませんでした"
+    end
   end
 
   def process({:multi, _pattern, _path}) do
-    System.halt(0)
   end
 end
