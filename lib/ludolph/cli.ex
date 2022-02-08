@@ -1,4 +1,7 @@
 defmodule Ludolph.CLI do
+
+  alias Ludolph
+
   def main(argv) do
     argv
     |> parse_args()
@@ -37,6 +40,16 @@ defmodule Ludolph.CLI do
     end
   end
 
-  def process({:multi, _pattern, _path}) do
+  def process({:multi, pattern, path}) do
+    Ludolph.Multi.Application.start(:permanent , [pattern: pattern, path: path])
+
+    receive do
+      _ -> IO.inspect("hoge")
+    end
+
+    # case ret do
+    #   {:ok, count} -> "#{pattern}は#{count}個見つかりました"
+    #   {:ng} -> "見つかりませんでした"
+    # end
   end
 end
