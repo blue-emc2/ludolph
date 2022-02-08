@@ -31,7 +31,15 @@ defmodule CliTest do
     assert parse_args(["-s", "1234"]) == :help
   end
 
-  test "10000けたの円周率を888で検索すると7個見つかる" do
-    assert process({:single, "888", "test/pi_10000.txt"}) == "888は7個見つかりました"
+  describe "single mode" do
+    test "10000けたの円周率を888で検索すると7個見つかる" do
+      assert process({:single, "888", "test/pi_10000.txt"}) == "888は7個見つかりました"
+    end
+  end
+
+  describe "multi mode" do
+    test "10000けたの円周率を888で検索すると7個見つかる" do
+      assert process({:multi, "888", "test/pi_10000.txt"}) == "888は7個見つかりました"
+    end
   end
 end
