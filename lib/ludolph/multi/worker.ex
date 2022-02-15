@@ -15,8 +15,8 @@ defmodule Ludolph.Multi.Worker do
   end
 
   def handle_info(:search, _) do
-    # Menagerから次の100桁をもらい、検索結果を積める
-    {numbers, pattern} = Multi.Manager.next_numbers(100)
+    # Menagerから次の1000桁をもらい、検索結果を積める
+    {numbers, pattern} = Multi.Manager.next_numbers(1000)
     add_result(numbers, pattern)
   end
 
@@ -28,12 +28,6 @@ defmodule Ludolph.Multi.Worker do
 
   # 検索すべき数列がまだ残っている
   defp add_result(numbers, pattern) do
-    IO.inspect("add_result")
-    IO.inspect("numbers")
-    IO.inspect(numbers)
-    IO.inspect("pattern")
-    IO.inspect(pattern)
-
     number_list = String.codepoints(numbers)
     Multi.Gatherer.result(match_count(number_list, pattern))
 
@@ -43,9 +37,6 @@ defmodule Ludolph.Multi.Worker do
   end
 
   defp match_count(list, pattern) do
-    IO.inspect("match_count")
-    IO.inspect(list)
-    IO.inspect(pattern)
     [head | _tail] = String.codepoints(pattern)
 
     indexes =

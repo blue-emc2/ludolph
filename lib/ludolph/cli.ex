@@ -35,21 +35,19 @@ defmodule Ludolph.CLI do
   def process({:single, pattern, path}) do
     ret = Ludolph.Single.PISearcher.scan(path, pattern)
     case ret do
-      {:ok, count} -> "#{pattern}は#{count}個見つかりました"
-      {:ng} -> "見つかりませんでした"
+      {:ok, count} -> IO.puts("#{pattern}は#{count}個見つかりました")
+      {:ng} -> IO.puts("#{pattern}は見つかりませんでした")
     end
   end
 
   def process({:multi, pattern, path}) do
+    parent = self()
+    :global.register_name(:cli, parent)
     Ludolph.Multi.Application.start(:permanent , [pattern: pattern, path: path])
 
     receive do
-      _ -> IO.inspect("hoge")
+      {:ok, count} -> IO.puts("#{pattern}は#{count}個見つかりました")
+      {:ng} -> IO.puts("#{pattern}は見つかりませんでした")
     end
-
-    # case ret do
-    #   {:ok, count} -> "#{pattern}は#{count}個見つかりました"
-    #   {:ng} -> "見つかりませんでした"
-    # end
   end
 end

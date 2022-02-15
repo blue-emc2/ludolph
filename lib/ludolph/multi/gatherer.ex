@@ -31,7 +31,6 @@ defmodule Ludolph.Multi.Gatherer do
 
   def handle_cast(:done, _worker_count = 1) do
     report_results()
-    System.halt(0)
   end
 
   def handle_cast(:done, work_count) do
@@ -39,8 +38,6 @@ defmodule Ludolph.Multi.Gatherer do
   end
 
   def handle_cast({:result, index}, work_count) do
-    IO.inspect("result")
-    IO.inspect(index)
     Multi.Results.add(index)
     { :noreply, work_count }
   end
@@ -48,5 +45,8 @@ defmodule Ludolph.Multi.Gatherer do
   defp report_results() do
     IO.puts("Results: \n")
     Multi.Results.get()
+    pid = :global.whereis_name(:cli)
+
+    send(pid, {:ok, 0})
   end
 end
