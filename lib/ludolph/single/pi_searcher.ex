@@ -1,39 +1,18 @@
 defmodule Ludolph.Single.PISearcher do
   def scan(path, pattern) do
-    Stream.resource(
-      fn -> File.open!(path) end,
-      fn file ->
-        case IO.read(file, 1) do
-          data when is_binary(data) -> {[data], file}
-          _ -> {:halt, file}
-        end
-      end,
-      fn file -> File.close(file) end
-    )
-    # とりあえず10分割する
-    |> Stream.chunk_every(10)
-    |> get_numeric_list()
-    |> count_up(pattern)
-    |> result()
-  end
-
-  # 3.14の点を抜いた数列
-  defp get_numeric_list(stream) do
-    Enum.to_list(stream)
-    |> List.flatten()
-    |> List.delete_at(1)
-  end
-
-  defp result(count) do
-    case count do
-      0 -> {:ng}
-      _ -> {:ok, count}
-    end
+    File.stream!(path, [], :line)
+    |> Stream.flat_map(fn s -> String.split(s, "", trim: true) end)
+    |> Stream.chunk_every(1000)
+    |> Stream.map(fn chunk ->
+      chunk
+      |> count_up(pattern)
+    end)
+    |> Enum.to_list()
+    |> Enum.reduce(0, fn x, acc -> x + acc end)
   end
 
   defp count_up(list, pattern) do
     [head | _tail] = String.codepoints(pattern)
-
     indexes =
       Enum.with_index(list)
       |> Enum.reduce([], fn {n, index}, acc ->
@@ -44,7 +23,7 @@ defmodule Ludolph.Single.PISearcher do
             |> numeric_list_match(pattern)
 
           case ret do
-            {:ok} -> [index | acc]
+            {:ok} -> [index | acc] # TODO: 余裕があったら桁数も集計する
             {:ng} -> acc
           end
         else
