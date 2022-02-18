@@ -2,9 +2,9 @@ defmodule Ludolph.Multi.Application do
   def start(_type, args) do
     children = [
       Ludolph.Multi.Results,
-      { Ludolph.Multi.Manager, args },
+      {Ludolph.Multi.Manager, args},
       Ludolph.Multi.WorkerSupervisor,
-      { Ludolph.Multi.Gatherer, 1 }
+      {Ludolph.Multi.Gatherer, 5}
     ]
 
     opts = [strategy: :one_for_all, name: Ludolph.Multi.Supervisor]

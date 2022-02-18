@@ -14,7 +14,7 @@ defmodule Ludolph.Multi.Manager do
   end
 
   @impl true
-  def init([pattern: pattern, path: path]) do
+  def init(pattern: pattern, path: path) do
     {:ok, file} = File.open(path, [:read])
 
     {:ok, {file, pattern}}

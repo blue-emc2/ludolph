@@ -1,5 +1,4 @@
 defmodule Ludolph.CLI do
-
   alias Ludolph
 
   def main(argv) do
@@ -33,22 +32,24 @@ defmodule Ludolph.CLI do
   end
 
   def process({:single, pattern, path}) do
-    IO.puts("検索します")
+    IO.puts("シングルプロセスで検索します")
     ret = Ludolph.Single.PISearcher.scan(path, pattern)
+
     case ret do
       0 -> IO.puts("#{pattern}は見つかりませんでした")
-      ret -> IO.puts("#{pattern}は#{ret}個見つかりました")
+      count -> IO.puts("#{pattern}は#{count}個見つかりました")
     end
   end
 
   def process({:multi, pattern, path}) do
+    IO.puts("マルチプロセスで検索します")
     parent = self()
     :global.register_name(:cli, parent)
-    Ludolph.Multi.Application.start(:permanent , [pattern: pattern, path: path])
+    Ludolph.Multi.Application.start(:permanent, pattern: pattern, path: path)
 
     receive do
-      {:ok, count} -> IO.puts("#{pattern}は#{count}個見つかりました")
-      {:ng} -> IO.puts("#{pattern}は見つかりませんでした")
+      0 -> IO.puts("#{pattern}は見つかりませんでした")
+      count -> IO.puts("#{pattern}は#{count}個見つかりました")
     end
   end
 end
