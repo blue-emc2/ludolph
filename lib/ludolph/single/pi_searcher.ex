@@ -13,6 +13,7 @@ defmodule Ludolph.Single.PISearcher do
 
   defp count_up(list, pattern) do
     [head | _tail] = String.codepoints(pattern)
+
     indexes =
       Enum.with_index(list)
       |> Enum.reduce([], fn {n, index}, acc ->
@@ -23,7 +24,8 @@ defmodule Ludolph.Single.PISearcher do
             |> numeric_list_match(pattern)
 
           case ret do
-            {:ok} -> [index | acc] # TODO: 余裕があったら桁数も集計する
+            # TODO: 余裕があったら桁数も集計する
+            {:ok} -> [index | acc]
             {:ng} -> acc
           end
         else
