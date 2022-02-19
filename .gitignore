@@ -1,3 +1,7 @@
+*
+!*/
+!*.*
+
 # The directory Mix will write compiled artifacts to.
 /_build/
 
@@ -29,3 +33,4 @@ test/pi_hundred_million.txt
 test/pi_million.txt
 test/pi_ten_million.txt
 ludolph
+!lib/ludolph
