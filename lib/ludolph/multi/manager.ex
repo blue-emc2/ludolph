@@ -1,5 +1,5 @@
 defmodule Ludolph.Multi.Manager do
-  use GenServer
+  use GenServer, restart: :temporary
 
   @me Manager
 
@@ -15,8 +15,7 @@ defmodule Ludolph.Multi.Manager do
 
   @impl true
   def init(pattern: pattern, path: path) do
-    {:ok, file} = File.open(path, [:read])
-
+    file = File.open!(path, [:read])
     {:ok, {file, pattern}}
   end
 
