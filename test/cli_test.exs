@@ -1,6 +1,5 @@
-defmodule CliTest do
+defmodule Ludolph.CliTest do
   use ExUnit.Case
-  doctest Ludolph
 
   import Ludolph.CLI, only: [parse_args: 1, process: 1]
   import ExUnit.CaptureIO
@@ -11,21 +10,21 @@ defmodule CliTest do
   end
 
   test "シングルモードで起動する" do
-    assert parse_args(["-s", "/home/workspace/pi.txt", "-p", "1234"]) ==
-             {:single, "1234", "/home/workspace/pi.txt"}
+    assert parse_args(["-s", "/home/workspace/pi.txt", "1234"]) ==
+             {:single, "/home/workspace/pi.txt", "1234"}
   end
 
   test "マルチモードで起動する" do
-    assert parse_args(["-m", "/home/workspace/pi.txt", "-p", "1234"]) ==
-             {:multi, "1234", "/home/workspace/pi.txt"}
+    assert parse_args(["-m", "/home/workspace/pi.txt", "1234"]) ==
+             {:multi, "/home/workspace/pi.txt", "1234"}
   end
 
   test "シングルとマルチモードは共存できないのでヘルプが起動する" do
-    assert parse_args(["-m", "-s", "/home/workspace/pi.txt"]) == :help
+    assert parse_args(["-m", "-s", "/home/workspace/pi.txt", "1234"]) == :help
   end
 
   test "検索パターンが与えられなかったらヘルプが起動する" do
-    assert parse_args(["-m", "/home/workspace/pi.txt", "1234"]) == :help
+    assert parse_args(["-m", "/home/workspace/pi.txt"]) == :help
   end
 
   test "ファイルパスが与えられなかったらヘルプが起動する" do
@@ -35,7 +34,7 @@ defmodule CliTest do
   describe "single mode" do
     test "10000けたの円周率を888で検索すると7個見つかる" do
       ret = capture_io(fn ->
-        process({:single, "888", "test/pi_10000.txt"})
+        process({:single, "test/pi_10000.txt", "888"})
       end)
 
       assert ret == """
@@ -48,7 +47,7 @@ defmodule CliTest do
   describe "multi mode" do
     test "10000けたの円周率を888で検索すると7個見つかる" do
       ret = capture_io(fn ->
-        process({:multi, "888", "test/pi_10000.txt"})
+        process({:multi, "test/pi_10000.txt", "888"})
       end)
 
       assert ret == """

@@ -10,28 +10,28 @@ defmodule Ludolph.CLI do
   def parse_args(argv) do
     parse =
       OptionParser.parse(argv,
-        aliases: [s: :single, m: :multi, h: :help, p: :pattern],
-        strict: [single: :boolean, multi: :boolean, help: :boolean, pattern: :string]
+        aliases: [s: :single, m: :multi, h: :help],
+        strict: [single: :boolean, multi: :boolean, help: :boolean]
       )
 
     case parse do
-      {[_, help: true], _path, _} -> :help
-      {[single: true, multi: true, pattern: _], _path, _} -> :help
-      {[single: true, pattern: pattern], path, _} -> {:single, pattern, List.first(path)}
-      {[multi: true, pattern: pattern], path, _} -> {:multi, pattern, List.first(path)}
+      {[_, help: true], _, _} -> :help
+      {[single: true, multi: true], _, _} -> :help
+      {[single: true], [path, pattern], _} -> {:single, path, pattern}
+      {[multi: true], [path, pattern], _} -> {:multi, path, pattern}
       _ -> :help
     end
   end
 
   def process(:help) do
     IO.puts("""
-    usage: ludolph [-s | -m] path/to/pi.txt
+    Usage: ./ludolph [-s | -m] path/to/pi.txt 1234
     """)
 
     System.halt(0)
   end
 
-  def process({:single, pattern, path}) do
+  def process({:single, path, pattern}) do
     IO.puts("シングルプロセスで検索します")
     ret = Ludolph.Single.PISearcher.scan(path, pattern)
 
@@ -41,11 +41,11 @@ defmodule Ludolph.CLI do
     end
   end
 
-  def process({:multi, pattern, path}) do
+  def process({:multi, path, pattern}) do
     IO.puts("マルチプロセスで検索します")
     parent = self()
     :global.register_name(:cli, parent)
-    Ludolph.Multi.Application.start(:permanent, pattern: pattern, path: path)
+    Ludolph.Multi.Application.start(:permanent, path: path, pattern: pattern)
 
     receive do
       0 -> IO.puts("#{pattern}は見つかりませんでした")
