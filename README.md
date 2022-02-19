@@ -1,6 +1,19 @@
 # Ludolph
 
-**TODO: Add description**
+これは円周率のテキストファイルから任意の文字列を検索するコマンドラインツールです
+
+## Usage
+
+Usage: ludolph [option] <path> <pattern>
+
+Options:
+
+  -s single process
+  -m multi process
+
+## Example
+
+ludolph [-s | -m] path/to/pi.txt 1234
 
 ## Installation
 
