@@ -1,6 +1,7 @@
 # Ludolph
 
-これは円周率のテキストファイルから任意の文字列を検索するコマンドラインツールです
+このコマンドラインツールは円周率が書かれたテキストファイルから任意の文字列を検索するツールです
+検索文字列は円周率のみです
 
 ## Usage
 
@@ -8,12 +9,15 @@ Usage: ludolph [option] <path> <pattern>
 
 Options:
 
-  -s single process
-  -m multi process
+  -s: シングルプロセスで検索します
+  -m: マルチプロセスで検索します
+  -j: マルチプロセス検索時のプロセス数を指定します（デフォルトは5）
 
-## Example
+Commands:
 
-ludolph [-s | -m] path/to/pi.txt 1234
+  ludolph -s path/to/pi.txt 1234
+  ludolph -m path/to/pi.txt 1234
+  ludolph -m -j 3 path/to/pi.txt 1234
 
 ## Installation
 

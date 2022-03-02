@@ -16,11 +16,15 @@ defmodule Ludolph.CliTest do
 
   test "マルチモードで起動する" do
     assert parse_args(["-m", "/home/workspace/pi.txt", "1234"]) ==
-             {:multi, "/home/workspace/pi.txt", "1234"}
+             {:multi, 5, "/home/workspace/pi.txt", "1234"}
   end
 
   test "シングルとマルチモードは共存できないのでヘルプが起動する" do
     assert parse_args(["-m", "-s", "/home/workspace/pi.txt", "1234"]) == :help
+  end
+
+  test "シングルでジョブ数は指定できないのでヘルプが起動する" do
+    assert parse_args(["-s", "-j", "3", "/home/workspace/pi.txt", "1234"]) == :help
   end
 
   test "検索パターンが与えられなかったらヘルプが起動する" do
@@ -47,7 +51,7 @@ defmodule Ludolph.CliTest do
   describe "multi mode" do
     test "10000けたの円周率を888で検索すると7個見つかる" do
       ret = capture_io(fn ->
-        process({:multi, "test/pi_10000.txt", "888"})
+        process({:multi, 1, "test/pi_10000.txt", "888"})
       end)
 
       assert ret == """
