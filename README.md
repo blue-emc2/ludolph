@@ -5,19 +5,19 @@
 
 ## Usage
 
-Usage: ludolph [option] <path> <pattern>
+Usage: ludolph [option] \<path\> \<pattern\>
 
 Options:
 
-  -s: シングルプロセスで検索します
-  -m: マルチプロセスで検索します
-  -j: マルチプロセス検索時のプロセス数を指定します（デフォルトは5）
+    -s: シングルプロセスで検索します
+    -m: マルチプロセスで検索します
+    -j: マルチプロセス検索時のプロセス数を指定します（デフォルトは5）
 
 Commands:
 
-  ludolph -s path/to/pi.txt 1234
-  ludolph -m path/to/pi.txt 1234
-  ludolph -m -j 3 path/to/pi.txt 1234
+    ludolph -s path/to/pi.txt 1234
+    ludolph -m path/to/pi.txt 1234
+    ludolph -m -j 3 path/to/pi.txt 1234
 
 ## Installation
 
